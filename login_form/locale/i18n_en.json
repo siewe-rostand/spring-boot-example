@@ -1,0 +1,12 @@
+{
+  "email_label_text": "Enter the Email Please",
+  "password_label_text": "Enter the Password Please",
+  "login_title": "Login Form",
+  "password": "Password",
+  "home_title": "Welcome",
+  "text": "Welcome to this tutorial",
+  "log_out_button": "logOut",
+  "login": "login",
+  "sign_up": "Create an Account",
+  "sign_up_2": "Already have an account? Login"
+}
