@@ -15,4 +15,10 @@ class AuthProvider {
     return null;
   }
 
+  static Future<String> get jwtOrEmpty async {
+    var jwt = await storage.read(key: 'jwt');
+    if (jwt == null) return "";
+    return jwt;
+  }
+
 }

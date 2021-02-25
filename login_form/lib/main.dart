@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:login_form/splash-sreen.dart';
 import 'package:login_form/translation.dart';
 
@@ -19,6 +20,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  LocalStorage localStorage = LocalStorage('todo_app');
 
   @override
   void initState() {
@@ -27,7 +29,7 @@ class _MyAppState extends State<MyApp> {
     // Initializes a callback should something need
     // to be done when the language is changed
     allTranslations.onLocaleChangedCallback = _onLocaleChanged;
-    //_fetchStore();
+    localStorage.clear();
   }
 
   ///
@@ -48,7 +50,6 @@ class _MyAppState extends State<MyApp> {
       // Tells the system which are the supported languages
       supportedLocales: allTranslations.supportedLocales(),
       theme: ThemeData(
-        fontFamily: 'Slabo',
         primarySwatch: Colors.blue,
         inputDecorationTheme: InputDecorationTheme(hintStyle:
         TextStyle(color: Colors.blue)),

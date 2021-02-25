@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:login_form/model/product-model.dart';
-import 'package:login_form/save-product.dart';
+import 'package:login_form/product/product-services.dart';
 
-import 'login-data.dart';
+import '../login-data.dart';
 
 class AddProduct extends StatefulWidget {
   @override
@@ -68,10 +68,7 @@ class _AddProductState extends State<AddProduct> {
           );
         });
   }
-
-  Product product;
-
-  Future<Product> _futureProducts;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -143,6 +140,7 @@ class _AddProductState extends State<AddProduct> {
                       ),
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 10, horizontal: 15)),
+                  keyboardType: TextInputType.number,
                 ),
               ),
             ],
@@ -151,17 +149,41 @@ class _AddProductState extends State<AddProduct> {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: RaisedButton(
-                onPressed: () async{
+                onPressed: (){
+                  final String url = "$server_ip/api/products-with-image";
                   var productName = productNameController.text;
                   var productPrice = productPriceController.text;
                   Product products = Product(
                     name: productName,
-                    price: productPrice
+                    price: double.parse(productPrice)
                   );
-                  final String url = "$server_ip/api/products-with-image/";
-                  setState(() {
-                    SaveProduct.createProduct(products);
-                  });
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return AlertDialog(
+                      title: Text('Confirmation'),
+                      content: Text('Are you sure to save this sale ?'),
+                      actions: [
+                        FlatButton(
+                          child: Text('CANCEL'),
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                        ),
+                        FlatButton(
+                          child: Text('OK'),
+                          onPressed: ()async{
+                            var productMap = Product.toMap(products);
+                            print(productMap);
+                            //await SaveProduct.createProduct1(products);
+                            var res =await ProductAPI.postProducts(url, productMap);
+                            print('//////');
+                            print(res);
+                          },
+                        )
+                      ],
+                    );
+                  }));
+
                 },
                 child: Text(
                   'Save Product',

@@ -7,9 +7,9 @@ import 'dart:io';
 import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart' as dio;
 
-import 'login-data.dart';
+import '../login-data.dart';
 
-String token = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJmYTU4Y2FiMS1kOTdjLTQ1NjktOTI2Zi02MDY0NzMyYzBiZGEiLCJzdWIiOiJ5YXlhIiwiaWF0IjoxNjA4ODA5NDUzLCJleHAiOjE2MDk2NzM0NTMsImlkIjozLCJsb2dpbiI6InlheWEiLCJsYXN0TmFtZSI6IllheWEiLCJmaXJzdE5hbWUiOiJUb3RvIiwidGVsZXBob25lIjoiNjk3Mzg4NDQ3Iiwic3RvcmVJZCI6MiwibmJTdG9yZXMiOjIsIm93bmVyUGxheWVySWQiOiI2NjZlZDEwMi1hZTA4LTQ4NTEtOGViYS04NmI1MmQ5MjExNmYiLCJyb2xlcyI6WyJPV05FUiJdfQ.SfbWOnl8974zDogzWkH2a_XLcFkoG_X8khZmLqqVva2wOQU_08RgV-cP6g5yA_2yrrLRaotjUmehEi99TiCMQg";
+String token = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiIwMzNhYWQxMS0yMzExLTRiMjktYTAyNS1hMDllZmMwZmI4NGIiLCJzdWIiOiJ5YXlhIiwiaWF0IjoxNjEzMTM1NTk3LCJleHAiOjE2MTM5OTk1OTcsImlkIjozLCJsb2dpbiI6InlheWEiLCJsYXN0TmFtZSI6IllheWEiLCJmaXJzdE5hbWUiOiJUb3RvIiwidGVsZXBob25lIjoiNjk3Mzg4NDQ3Iiwic3RvcmVJZCI6MiwibmJTdG9yZXMiOjIsInJvbGVzIjpbIk9XTkVSIl19.OvwDDsrjIBtXcmopdZUBGg8Y2O4fXtcuGVUqAa0L8BHtzvTw3JWaC9qJy2XGU6Ku3Dg_GMmVKiK9_12CSC2HIA";
 
 class SaveProduct {
   /*static uploadFileFromDio(Product userProfile, File photoFile) async {
@@ -102,10 +102,8 @@ class SaveProduct {
     });
   }*/
 
-   /*static Future<Response> createProduct( Product product) async {
-    final String token = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJiMGU0MWFlZS0wNjBlLTQxYzctODE0MS03ZWQxYWY0Y2I4MzEiLCJzdWIiOiJ5YXlhIiwiaWF0IjoxNjA4NTUwODg1LCJleHAiOjE2MDk0MTQ4ODUsImlkIjozLCJsb2dpbiI6InlheWEiLCJsYXN0TmFtZSI6IllheWEiLCJmaXJzdE5hbWUiOiJUb3RvIiwidGVsZXBob25lIjoiNjk3Mzg4NDQ3Iiwic3RvcmVJZCI6MiwibmJTdG9yZXMiOjIsIm93bmVyUGxheWVySWQiOiI2NjZlZDEwMi1hZTA4LTQ4NTEtOGViYS04NmI1MmQ5MjExNmYiLCJyb2xlcyI6WyJPV05FUiJdfQ.dLEEKO5NiE3HmRNi65ejXeG_3s-D5gJQDa9ykVA5WFXCFpO3HB07GlJrdp04snrN3NtK2sQ4NksrD-HPaOq1bA";
-
-    final String url = "$server_ip/api/products-with-image/";
+   static Future<Response> createProduct1( Product product) async {
+   final String url = "$server_ip/api/products-with-image/";
 
       ///[1] CREATING INSTANCE
 
@@ -128,7 +126,7 @@ class SaveProduct {
            options.headers
              ..addAll(
              {
-               'Content-Type': 'application/json',
+               'Content-Type': 'multipart/form-data; boundary=dart-http-boundary-Ce9PBgi7GcBRgxgF06aY6lVx0LSOfnVH2tQufqTia_h0ds21l6r',
                'Authorization': "Bearer " + token,
              });
 
@@ -157,19 +155,20 @@ class SaveProduct {
        },
      ));
 
-        var bodyValue = product.toJson();
+        var bodyValue = Product.toMap(product);
 
         var bodydata = json.encode(bodyValue);
-        Map<String, dynamic> requestBody = {
-          'product':bodydata
-        };
+     Map requestBody = <String, dynamic>{
+       'product':bodyValue
+     };
         //[3] ADDING EXTRA INFO
-        var formData =
-        new dio.FormData.fromMap(
-          requestBody
+        FormData formData =
+        FormData.fromMap(
+         requestBody
         );
-//        print(requestBody);
-//        print(formData);
+        print(requestBody);
+        print("**************");
+        print(formData.fields);
 
        /* //[4] ADD IMAGE TO UPLOAD
         var file = await dio.MultipartFile.fromFile(imageFile.path,
@@ -182,8 +181,9 @@ class SaveProduct {
         //[5] SEND TO SERVER
         var response = await dioRequest.post(
           url,
-          data: formData,
+          data: requestBody,
           //options: dio.Options(contentType: Headers.formUrlEncodedContentType, headers: heads)
+          //options: dio.Options(contentType: 'multipart/form-data; boundary=dart-http-boundary-Ce9PBgi7GcBRgxgF06aY6lVx0LSOfnVH2tQufqTia_h0ds21l6r')
         );
         print(response);
      final result = json.decode(response.toString());
@@ -195,7 +195,7 @@ class SaveProduct {
 
       //print(result);
 
-  }*/
+  }
 
  /*static Future<http.Response> createProduct(Product product) async {
     final String token = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJiMGU0MWFlZS0wNjBlLTQxYzctODE0MS03ZWQxYWY0Y2I4MzEiLCJzdWIiOiJ5YXlhIiwiaWF0IjoxNjA4NTUwODg1LCJleHAiOjE2MDk0MTQ4ODUsImlkIjozLCJsb2dpbiI6InlheWEiLCJsYXN0TmFtZSI6IllheWEiLCJmaXJzdE5hbWUiOiJUb3RvIiwidGVsZXBob25lIjoiNjk3Mzg4NDQ3Iiwic3RvcmVJZCI6MiwibmJTdG9yZXMiOjIsIm93bmVyUGxheWVySWQiOiI2NjZlZDEwMi1hZTA4LTQ4NTEtOGViYS04NmI1MmQ5MjExNmYiLCJyb2xlcyI6WyJPV05FUiJdfQ.dLEEKO5NiE3HmRNi65ejXeG_3s-D5gJQDa9ykVA5WFXCFpO3HB07GlJrdp04snrN3NtK2sQ4NksrD-HPaOq1bA";
@@ -229,28 +229,30 @@ class SaveProduct {
    print(future);
 
   }*/
- /* static Future<void> createUser(String url, Product body) async {
-    final String token = "eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJiMGU0MWFlZS0wNjBlLTQxYzctODE0MS03ZWQxYWY0Y2I4MzEiLCJzdWIiOiJ5YXlhIiwiaWF0IjoxNjA4NTUwODg1LCJleHAiOjE2MDk0MTQ4ODUsImlkIjozLCJsb2dpbiI6InlheWEiLCJsYXN0TmFtZSI6IllheWEiLCJmaXJzdE5hbWUiOiJUb3RvIiwidGVsZXBob25lIjoiNjk3Mzg4NDQ3Iiwic3RvcmVJZCI6MiwibmJTdG9yZXMiOjIsIm93bmVyUGxheWVySWQiOiI2NjZlZDEwMi1hZTA4LTQ4NTEtOGViYS04NmI1MmQ5MjExNmYiLCJyb2xlcyI6WyJPV05FUiJdfQ.dLEEKO5NiE3HmRNi65ejXeG_3s-D5gJQDa9ykVA5WFXCFpO3HB07GlJrdp04snrN3NtK2sQ4NksrD-HPaOq1bA";
-
+ /*
+  static Future createUser(String url, Map body) async {
     Map<String, dynamic> headers = {
+      "Content-Type": "application/json",
       "Accept": "application/json",
       "Authorization": "Bearer " + token
     };
-    Map<String, dynamic> requestBody = <String,dynamic>{
-      'product':body.toJson()
+    Map requestBody = <String,dynamic>{
+      'product':body
     };
 
     var postUri = Uri.parse(url);
     var request = new http.MultipartRequest("POST", postUri);
     // ignore: unnecessary_statements
     request.fields[requestBody];
-    request.files.add(new http.MultipartFile.fromBytes('file', await File.fromUri(postUri).readAsBytes(), contentType: new MediaType('image', 'jpeg')));
-
-    request.send().then((response) {
+    request.headers[headers];
+    //request.files.add(new http.MultipartFile.fromBytes('file', await File.fromUri(postUri).readAsBytes(), contentType: new MediaType('image', 'jpeg')));
+    var res = request.send();
+    print(request.headers);
+    res.then((response) {
       if (response.statusCode == 200) print("Uploaded!");
     });
   }*/
-  static Future createProduct(Product products) async {
+  /*static Future createProduct(Product products) async {
 
 
     String url = "$server_ip/api/products-with-image/";
@@ -266,7 +268,8 @@ class SaveProduct {
     HttpClientRequest request = await httpClient.postUrl(Uri.parse(url));
     request.headers.set('content-type', 'application/json');
     request.headers.set ('Authorization', "Bearer " + token);
-    request.headers.add("body", requestBody);
+    //request.headers.add("body", requestBody);
+
    // request.add(utf8.encode(json.encode(requestBody)));
     HttpClientResponse response = await request.close();
     // todo - you should check the response.statusCode
@@ -304,5 +307,5 @@ class SaveProduct {
     // If that response was not OK, throw an error.
     throw Exception('Failed to load ConversationRepo');
   }*/
-  }
+  }*/
 }

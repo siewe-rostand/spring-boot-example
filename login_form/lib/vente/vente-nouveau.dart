@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:login_form/model/product-model.dart';
-import 'package:login_form/product.dart';
-import 'package:login_form/vente.dart';
+import 'file:///C:/Users/ROSTAND/IdeaProjects/login_form/lib/vente/vente.dart';
+
 
 class NouvelleVente extends StatefulWidget {
+  final Product product;
+  NouvelleVente({Key key, this.product})
+      : super(key: key);
   @override
   _NouvelleVenteState createState() => _NouvelleVenteState();
 }
@@ -11,11 +14,11 @@ class NouvelleVente extends StatefulWidget {
 class _NouvelleVenteState extends State<NouvelleVente> {
   bool _btnEnabled = false;
   bool _searchbtn = false;
-  TextEditingController productController;
-  TextEditingController priceController;
-  TextEditingController quantityController;
+  TextEditingController productController= TextEditingController();
+  TextEditingController priceController= TextEditingController();
+  TextEditingController quantityController= TextEditingController();
 
-  @override
+  /*@override
   void initState() {
     productController = TextEditingController();
     priceController = TextEditingController();
@@ -37,8 +40,13 @@ class _NouvelleVenteState extends State<NouvelleVente> {
     return _btnEnabled;
   }
 
-  Map<String, dynamic> product;
-  List<Product> products;
+  void showData() {
+    var productName = productController.text;
+    var productPrice = priceController.text;
+    setState(() {
+      productName;
+    });
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +61,12 @@ class _NouvelleVenteState extends State<NouvelleVente> {
                     context, MaterialPageRoute(builder: (context) => Sales()));
               }),
         ),
+        bottomNavigationBar:
+        Container(
+            margin: EdgeInsets.only(top: 330),
+            width: double.infinity,
+            child: ElevatedButton(
+                onPressed: () {}, child: Text('Ajouter'))) ,
         body: Center(
           child: Container(
             padding: EdgeInsets.all(10),
@@ -72,7 +86,7 @@ class _NouvelleVenteState extends State<NouvelleVente> {
                             child: TextFormField(
                               onFieldSubmitted: null,
                               onChanged: (value) {
-                                isEmpty();
+                                //isEmpty();
                               },
                               controller: productController,
                               decoration: InputDecoration(
@@ -90,12 +104,8 @@ class _NouvelleVenteState extends State<NouvelleVente> {
                           IconButton(
                               icon: Icon(Icons.search),
                               onPressed: () async {
-                                var productName = productController.text;
-                                var productPrice = priceController.text;
-                                setState(() {
-                                  Navigator.push(
-                                      context, MaterialPageRoute(builder: (context)=>ProductPage(productName: productName, productPrice: productPrice)));
-                                });
+                                // open the product list screen
+
                               })
                         ],
                       ),
@@ -105,7 +115,12 @@ class _NouvelleVenteState extends State<NouvelleVente> {
                       child: TextFormField(
                         onFieldSubmitted: null,
                         onChanged: (value) {
-                          isEmpty();
+                          var newName =productController.text;
+                          var newPrice = priceController.text;
+                          newName= widget.product.name;
+                          setState(() {
+                            value = widget.product.name;
+                          });
                         },
                         controller: priceController,
                         decoration: InputDecoration(
@@ -123,7 +138,7 @@ class _NouvelleVenteState extends State<NouvelleVente> {
                       child: TextFormField(
                         onFieldSubmitted: null,
                         onChanged: (value) {
-                          isEmpty();
+                          //isEmpty();
                         },
                         controller: quantityController,
                         readOnly: true,
@@ -156,11 +171,6 @@ class _NouvelleVenteState extends State<NouvelleVente> {
                     ),
                     Column(
                       children: [
-                        Container(
-                            margin: EdgeInsets.only(top: 330),
-                            width: double.infinity,
-                            child: ElevatedButton(
-                                onPressed: () {}, child: Text('Ajouter')))
                       ],
                     ),
                   ],
@@ -172,6 +182,20 @@ class _NouvelleVenteState extends State<NouvelleVente> {
       ),
     );
   }
+  /*void _awaitReturnValueFromSecondScreen(BuildContext context) async {
+
+    // start the SecondScreen and wait for it to finish with a result
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SecondScreen(),
+        ));
+
+    // after the SecondScreen result comes back update the Text widget with it
+    setState(() {
+      text = result;
+    });
+  }*/
 }
 
 List<Widget> buildInput() {
@@ -180,7 +204,6 @@ List<Widget> buildInput() {
       padding: EdgeInsets.all(8),
       margin: EdgeInsets.only(top: 20),
       child: TextFormField(
-        key: Key('email'),
         decoration: InputDecoration(
           labelText: 'Produit',
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),

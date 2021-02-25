@@ -1,31 +1,59 @@
-/*class Product {
+
+class Product {
   final int id;
+  final int storeId;
   final String name;
   final String description;
+  final String createdDate;
+  final String image;
   final double stock;
-  final String price;
+  final double price;
 
-  Product({this.id, this.name, this.price, this.description, this.stock});
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'price': price,
-    'description': description,
-    'stock': stock
+  Product({this.id, this.name, this.price, this.description, this.stock,this.createdDate,this.image,this.storeId});
+
+  static Map<String, dynamic> toMap(Product products) => {
+    'id': products.id,
+    'storeId': products.storeId,
+    'name': products.name,
+    'description': products.description,
+    'createdDate': products.createdDate,
+    'image': products.image,
+    'stock': products.stock,
+    'price': products.price,
   };
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       id: json['id'],
-      name: json['name'] as String,
-      price: json['price'] as String,
+      storeId: json['storeId'],
+      name: json['name'] ,
+      price: json['price'] ,
       description: json['description'],
+      createdDate: json['createdDate'],
+      image: json['image'],
       stock: json['stock'],
     );
   }
-}*/
+  Map<String, dynamic> toJson() {
 
-class Product {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
+    data['name'] = this.name;
+    data['description'] = this.description;
+    data['createdDate'] = this.createdDate;
+    data['image'] = this.image;
+    data['stock'] = this.stock;
+    data['price'] = this.price;
+
+    return data;
+  }
+
+  String getFromList(Map<String, dynamic> json, String key) {
+    return json != null ? json[key] : "";
+  }
+}
+
+/*class Product {
   int id;
   String name;
   String description;
@@ -97,4 +125,4 @@ class Product {
     return data;
   }
 }
-
+*/
